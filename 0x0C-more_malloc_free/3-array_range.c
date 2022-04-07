@@ -1,3 +1,8 @@
+/*
+ * File: 3-array_range.c
+ * Auth: Brennan D Baraban
+ */
+
 #include "main.h"
 #include <stdlib.h>
 
