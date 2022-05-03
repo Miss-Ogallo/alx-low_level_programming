@@ -1,57 +1,30 @@
 #include "main.h"
-#include <fcntl.h>
-#include <unistd.h>
 
 /**
- * str_len - Finds the length of a string
- * @str: The string whose length is to be found
+ * create_file - Creates a file.
+ * @filename: A pointer to the name of the file to create.
+ * @text_content: A pointer to a string to write to the file.
  *
- * Return: Length of the string
- */
-int str_len(char *str)
-{
-	int len = 0, i;
-
-	for (i = 0; str[i]; i++)
-	{
-		len++;
-	}
-	return (len);
-}
-
-/**
- * create_file - Creates a file
- * @filename: Name of file to create
- * @text_content: NULL terminated string to write to the created file
- *
- * Return: - (1) on success
- *         - (-1) on failure
+ * Return: If the function fails - -1.
+ *         Otherwise - 1.
  */
 int create_file(const char *filename, char *text_content)
 {
-	int fd, bytes_written, length;
+	int fd, w, len = 0;
 
 	if (filename == NULL)
 		return (-1);
 
-	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0600);
-	if (fd == -1)
-		return (-1);
-
-	if (text_content == NULL)
+	if (text_content != NULL)
 	{
-		length = 0;
-		text_content = "";
+		for (len = 0; text_content[len];)
+			len++;
 	}
 
-	else
-	{
-		length = str_len(text_content);
-	}
+	fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0600);
+	w = write(fd, text_content, len);
 
-	bytes_written = write(fd, text_content, length);
-
-	if (bytes_written == -1)
+	if (fd == -1 || w == -1)
 		return (-1);
 
 	close(fd);
